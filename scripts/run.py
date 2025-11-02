@@ -36,7 +36,7 @@ def main():
         "-d", "--data-dir", default="data", help="Directory to store posts and media"
     )
     parser.add_argument(
-        "-e", "--env-file", default=".env", help="Path to .env file with API credentials"
+        "-e", "--env-file", default=".env", help="Path to .env file with the bot token"
     )
     parser.add_argument(
         "-l", "--limit", type=int, default=10, help="Maximum number of posts to fetch per channel"

@@ -28,7 +28,7 @@ class Config:
 
         Args:
             config_file: Path to the YAML configuration file.
-            env_file: Path to the .env file with API credentials.
+            env_file: Path to the .env file with the bot token.
             data_dir: Directory to store posts and media.
             channels_file: Path to the file containing channel usernames.
         """
@@ -84,14 +84,12 @@ class Config:
 
     def _validate_config(self) -> None:
         """Validate the configuration."""
-        # Check API credentials
-        api_id = os.getenv("API_ID")
-        api_hash = os.getenv("API_HASH")
-
-        if not api_id or not api_hash:
+        # Check bot token
+        bot_token = os.getenv("BOT_TOKEN")
+        if not bot_token:
             logger.warning(
-                "API_ID and API_HASH not found in environment variables. "
-                "These are required for connecting to Telegram."
+                "BOT_TOKEN not found in environment variables. "
+                "Create a bot via @BotFather and set BOT_TOKEN in your .env file."
             )
 
         # Check channels file

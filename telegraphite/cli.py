@@ -182,7 +182,7 @@ def parse_args():
         "-e",
         "--env-file",
         default=".env",
-        help="Path to .env file with API credentials (default: .env)",
+        help="Path to .env file with the bot token (default: .env)",
     )
     parser.add_argument(
         "-l",
@@ -291,7 +291,7 @@ def main():
         # Check if .env file exists
         if not os.path.exists(args.env_file):
             logger.error(f".env file not found: {args.env_file}")
-            logger.info("Create a .env file with API_ID and API_HASH from https://my.telegram.org/")
+            logger.info("Create a .env file with BOT_TOKEN obtained from @BotFather")
             return 1
             
         if args.command == "once":

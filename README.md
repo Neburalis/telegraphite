@@ -35,18 +35,15 @@ pip install telegraphite
 
 ## Setup
 
-1. Create a Telegram API application:
-   - Go to https://my.telegram.org/
-   - Log in with your phone number
-   - Go to 'API development tools'
-   - Create a new application
-   - Note your API ID and API Hash
+1. Create a Telegram bot via @BotFather:
+   - Open Telegram and start a chat with @BotFather
+   - Use the `/newbot` command and follow the prompts
+   - Copy the bot token provided at the end
 
 2. Create a `.env` file in your project directory with the following content:
 
 ```
-API_ID=your_api_id
-API_HASH=your_api_hash
+BOT_TOKEN=your_bot_token
 ```
 
 3. Create a `channels.txt` file with one channel username per line:
@@ -56,6 +53,8 @@ API_HASH=your_api_hash
 @channel2
 channel3
 ```
+
+TeleGraphite uses Telegram's public bot application credentials under the hood, so supplying the bot token is enough to authenticate.
 
 ## Usage
 
@@ -76,7 +75,7 @@ telegraphite continuous --interval 3600
 ```
 -c, --channels-file  Path to file containing channel usernames (default: channels.txt)
 -d, --data-dir       Directory to store posts and media (default: data)
--e, --env-file       Path to .env file with API credentials (default: .env)
+-e, --env-file       Path to .env file with the bot token (default: .env)
 -l, --limit          Maximum number of posts to fetch per channel (default: 10)
 -v, --verbose        Enable verbose logging
 -i, --interval       Interval between fetches in seconds (default: 3600, only for continuous mode)

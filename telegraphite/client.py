@@ -11,7 +11,8 @@ from typing import Optional
 
 from dotenv import load_dotenv
 from telethon import TelegramClient
-from telethon.errors import ApiIdInvalidError, AuthKeyError, BotTokenInvalidError
+from telethon.errors import ApiIdInvalidError, AuthKeyError
+from telethon.errors.rpcerrorlist import BotTokenInvalidError
 
 from telegraphite.errors import AuthenticationError
 

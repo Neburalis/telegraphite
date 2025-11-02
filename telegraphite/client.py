@@ -28,21 +28,22 @@ class TelegramClientManager:
             env_path: Path to the .env file. If None, looks in the current directory.
             
         Raises:
-            AuthenticationError: If API credentials are missing or invalid.
+            AuthenticationError: If credentials are missing or invalid.
         """
-        # Load environment variables from .env file
         env_path = env_path or Path(".env")
         load_dotenv(env_path)
 
-        # Get API credentials
+        self.bot_token = os.getenv("BOT_TOKEN")
         self.api_id = os.getenv("API_ID")
         self.api_hash = os.getenv("API_HASH")
 
-        if not self.api_id or not self.api_hash:
-            logger.error("API_ID and API_HASH must be set in the .env file")
+        if self.bot_token:
+            logger.info("Using bot token authentication")
+            self.api_id = self.api_id or "0"
+            self.api_hash = self.api_hash or "0"
+        elif not self.api_id or not self.api_hash:
             raise AuthenticationError(
-                "API_ID and API_HASH must be set in the .env file. "
-                "Get them from https://my.telegram.org/"
+                "Either BOT_TOKEN or (API_ID and API_HASH) must be set in .env file"
             )
 
         logger.debug(f"Initialized TelegramClientManager with env file: {env_path}")
@@ -57,21 +58,14 @@ class TelegramClientManager:
         Raises:
             AuthenticationError: If there is an error with Telegram authentication.
         """
-        try:
-            logger.info("Starting Telegram client session")
-            self.client = TelegramClient("telegraphite_session", self.api_id, self.api_hash)
+        logger.info("Starting Telegram client session")
+        self.client = TelegramClient("telegraphite_session", self.api_id, self.api_hash)
+        if self.bot_token:
+            await self.client.start(bot_token=self.bot_token)
+        else:
             await self.client.start()
-            logger.info("Telegram client session started successfully")
-            return self.client
-        except ApiIdInvalidError as e:
-            logger.error(f"Invalid API credentials: {e}")
-            raise AuthenticationError(f"Invalid API credentials: {e}") from e
-        except AuthKeyError as e:
-            logger.error(f"Authentication key error: {e}")
-            raise AuthenticationError(f"Authentication key error: {e}") from e
-        except Exception as e:
-            logger.error(f"Error starting Telegram client: {e}")
-            raise AuthenticationError(f"Failed to start Telegram client: {e}") from e
+        logger.info("Telegram client session started successfully")
+        return self.client
 
     async def stop(self):
         """Stop the Telegram client session."""

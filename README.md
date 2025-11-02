@@ -35,6 +35,23 @@ pip install telegraphite
 
 ## Setup
 
+You can authenticate using either a bot token (recommended for scraping) or personal API credentials.
+
+### Option 1: Using Bot Token (Recommended)
+
+1. Create a Telegram bot:
+   - Open Telegram and search for [@BotFather](https://t.me/botfather)
+   - Send `/newbot` and follow the instructions
+   - Copy the bot token provided
+
+2. Create a `.env` file in your project directory:
+
+```
+BOT_TOKEN=your_bot_token_here
+```
+
+### Option 2: Using Personal API Credentials
+
 1. Create a Telegram API application:
    - Go to https://my.telegram.org/
    - Log in with your phone number
@@ -42,12 +59,14 @@ pip install telegraphite
    - Create a new application
    - Note your API ID and API Hash
 
-2. Create a `.env` file in your project directory with the following content:
+2. Create a `.env` file in your project directory:
 
 ```
 API_ID=your_api_id
 API_HASH=your_api_hash
 ```
+
+### Channel Setup
 
 3. Create a `channels.txt` file with one channel username per line:
 

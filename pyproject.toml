@@ -1,0 +1,36 @@
+ [build-system]
+ requires = ["setuptools>=69.0"]
+ build-backend = "setuptools.build_meta"
+
+ [project]
+ name = "telegraphite"
+ version = "0.1.0"
+ description = "A tool to fetch and save posts from public Telegram channels"
+ readme = "README.md"
+requires-python = ">=3.8.1"
+ authors = [{ name = "TeleGraphite Developer", email = "example@example.com" }]
+ keywords = ["telegram", "telethon", "scraper"]
+ dependencies = [
+   "telethon>=1.24.0",
+   "python-dotenv>=0.19.0",
+   "pyyaml>=6.0",
+ ]
+
+ [project.optional-dependencies]
+ test = [
+   "pytest>=7.0.0",
+   "pytest-asyncio>=0.20.0",
+   "pytest-cov>=4.0.0",
+ ]
+ dev = [
+   "black>=23.3.0",
+   "isort>=5.12.0",
+   "flake8>=6.0.0",
+   "flake8-docstrings>=1.7.0",
+   "pre-commit>=3.3.0",
+ ]
+
+ [project.scripts]
+ telegraphite = "telegraphite.cli:main"
+
+

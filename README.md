@@ -20,18 +20,15 @@ A tool to fetch and save posts from public Telegram channels.
 
 ```bash
 # Clone the repository
-git clone https://github.com/hamodywe/telegraphite.git
+git clone https://github.com/Neburalis/telegraphite.git
 cd telegraphite
 
-# Install the package
-pip install -e .
+# Install dependencies and an editable build
+uv sync
 ```
 
-### Using pip
+`uv sync` creates a `.venv` in the project root. Activate it manually or use `uv run` for commands. For development tooling install extras with `uv sync --extra dev`.
 
-```bash
-pip install telegraphite
-```
 
 ## Setup
 

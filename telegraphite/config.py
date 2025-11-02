@@ -84,14 +84,11 @@ class Config:
 
     def _validate_config(self) -> None:
         """Validate the configuration."""
-        # Check API credentials
-        api_id = os.getenv("API_ID")
-        api_hash = os.getenv("API_HASH")
-
-        if not api_id or not api_hash:
+        # Check bot token
+        if not os.getenv("BOT_TOKEN"):
             logger.warning(
-                "API_ID and API_HASH not found in environment variables. "
-                "These are required for connecting to Telegram."
+                "BOT_TOKEN not found in environment variables. "
+                "Set BOT_TOKEN in your .env file to authenticate the bot."
             )
 
         # Check channels file

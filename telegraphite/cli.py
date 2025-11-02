@@ -291,7 +291,7 @@ def main():
         # Check if .env file exists
         if not os.path.exists(args.env_file):
             logger.error(f".env file not found: {args.env_file}")
-            logger.info("Create a .env file with API_ID and API_HASH from https://my.telegram.org/")
+            logger.info("Create a .env file with BOT_TOKEN=<your_bot_token> issued by @BotFather")
             return 1
             
         if args.command == "once":

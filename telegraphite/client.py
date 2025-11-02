@@ -11,39 +11,28 @@ from typing import Optional
 
 from dotenv import load_dotenv
 from telethon import TelegramClient
-from telethon.errors import ApiIdInvalidError, AuthKeyError
+from telethon.errors import ApiIdInvalidError, AuthKeyError, BotTokenInvalidError
 
 from telegraphite.errors import AuthenticationError
 
 logger = logging.getLogger(__name__)
 
 
+APP_ID = 2040
+APP_HASH = "b18441a1ff607e10a989891a5462e627"
+
+
 class TelegramClientManager:
     """Manages the Telegram client connection and authentication."""
 
     def __init__(self, env_path: Optional[str] = None):
-        """Initialize the Telegram client manager.
-
-        Args:
-            env_path: Path to the .env file. If None, looks in the current directory.
-            
-        Raises:
-            AuthenticationError: If API credentials are missing or invalid.
-        """
-        # Load environment variables from .env file
         env_path = env_path or Path(".env")
         load_dotenv(env_path)
+        self.bot_token = os.getenv("BOT_TOKEN")
 
-        # Get API credentials
-        self.api_id = os.getenv("API_ID")
-        self.api_hash = os.getenv("API_HASH")
-
-        if not self.api_id or not self.api_hash:
-            logger.error("API_ID and API_HASH must be set in the .env file")
-            raise AuthenticationError(
-                "API_ID and API_HASH must be set in the .env file. "
-                "Get them from https://my.telegram.org/"
-            )
+        if not self.bot_token:
+            logger.error("BOT_TOKEN must be set in the .env file")
+            raise AuthenticationError("BOT_TOKEN must be set in the .env file via @BotFather.")
 
         logger.debug(f"Initialized TelegramClientManager with env file: {env_path}")
         self.client = None
@@ -59,13 +48,16 @@ class TelegramClientManager:
         """
         try:
             logger.info("Starting Telegram client session")
-            self.client = TelegramClient("telegraphite_session", self.api_id, self.api_hash)
-            await self.client.start()
+            self.client = TelegramClient("telegraphite_bot_session", APP_ID, APP_HASH)
+            await self.client.start(bot_token=self.bot_token)
             logger.info("Telegram client session started successfully")
             return self.client
+        except BotTokenInvalidError as e:
+            logger.error(f"Invalid bot token: {e}")
+            raise AuthenticationError(f"Invalid bot token: {e}") from e
         except ApiIdInvalidError as e:
-            logger.error(f"Invalid API credentials: {e}")
-            raise AuthenticationError(f"Invalid API credentials: {e}") from e
+            logger.error(f"Telegram API rejected default credentials: {e}")
+            raise AuthenticationError(f"Telegram API rejected default credentials: {e}") from e
         except AuthKeyError as e:
             logger.error(f"Authentication key error: {e}")
             raise AuthenticationError(f"Authentication key error: {e}") from e

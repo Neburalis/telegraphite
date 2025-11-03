@@ -29,6 +29,19 @@ uv sync
 
 `uv sync` creates a `.venv` in the project root. Activate it manually or use `uv run` for commands. For development tooling install extras with `uv sync --extra dev`.
 
+### Docker
+
+```bash
+# Clone the repository
+git clone https://github.com/Neburalis/telegraphite.git
+cd telegraphite
+
+# Build the Docker image (uses uv.lock to pin deps)
+docker build -t telegraphite .
+```
+
+Build the image from the project root; `uv.lock` keeps container dependencies pinned.
+
 
 ## Setup
 
@@ -67,6 +80,23 @@ telegraphite once
 # Fetch posts continuously with a 1-hour interval
 telegraphite continuous --interval 3600
 ```
+
+### Docker
+
+```bash
+docker run --rm \
+  # Mount the channels list
+  -v "$(pwd)/channels.txt:/app/channels.txt" \
+  # Mount contact pattern definitions if customised
+  -v "$(pwd)/contact_patterns.txt:/app/contact_patterns.txt" \
+  # Provide Telegram credentials
+  -v "$(pwd)/.env:/app/.env" \
+  # Persist fetched data locally
+  -v "$(pwd)/data:/app/data" \
+  telegraphite once
+```
+
+Append CLI arguments after `telegraphite` to reuse all commands, for example `telegraphite continuous --interval 1800 --verbose`.
 
 ### Options
 
@@ -135,8 +165,6 @@ To use a configuration file:
 ```bash
 telegraphite --config config.yaml once
 ```
-
-Command-line arguments will override settings in the configuration file.
 
 ### Examples
 
